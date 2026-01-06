@@ -14,7 +14,11 @@ impl CursorPosition {
         let safe_offset = offset.min(rope.len_chars().saturating_sub(1).max(0));
 
         if rope.len_chars() == 0 {
-            return Self { line: 1, column: 1, offset: 0 };
+            return Self {
+                line: 1,
+                column: 1,
+                offset: 0,
+            };
         }
 
         let line_idx = rope.char_to_line(safe_offset);

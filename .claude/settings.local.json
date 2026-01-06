@@ -9,7 +9,8 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebSearch",
       "WebFetch(domain:docs.rs)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(cargo fmt:*)"
     ]
   }
 }

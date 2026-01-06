@@ -1,5 +1,5 @@
-use egui::{Pos2, Rect, Sense, Stroke, Ui, Vec2};
 use crate::theme::{colors, layout};
+use egui::{Pos2, Rect, Sense, Stroke, Ui, Vec2};
 
 /// Minimap widget showing a condensed code overview
 pub struct Minimap<'a> {
@@ -63,7 +63,8 @@ impl<'a> Minimap<'a> {
             painter.rect_filled(viewport_rect, 2.0, colors::MINIMAP_VIEWPORT);
 
             // Draw current line indicator
-            let current_y = rect.top() + ((self.current_line.saturating_sub(1)) as f32 * line_height);
+            let current_y =
+                rect.top() + ((self.current_line.saturating_sub(1)) as f32 * line_height);
             let current_line_rect = Rect::from_min_size(
                 Pos2::new(rect.left(), current_y),
                 Vec2::new(layout::MINIMAP_WIDTH, line_height.max(2.0)),
@@ -84,7 +85,8 @@ impl<'a> Minimap<'a> {
                 let content_len = trimmed.len().min(80);
 
                 if content_len > 0 {
-                    let x_start = rect.left() + 4.0 + (indent as f32 * layout::MINIMAP_CHAR_WIDTH * 0.5);
+                    let x_start =
+                        rect.left() + 4.0 + (indent as f32 * layout::MINIMAP_CHAR_WIDTH * 0.5);
                     let x_end = x_start + (content_len as f32 * layout::MINIMAP_CHAR_WIDTH);
 
                     painter.line_segment(

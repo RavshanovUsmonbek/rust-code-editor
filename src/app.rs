@@ -1,16 +1,14 @@
 use crate::file_icons;
 use crate::fs_tree::FileNode;
 use crate::state::{CursorPosition, EditorTabState};
-use crate::theme::{colors, fonts, layout, create_vscode_style};
+use crate::theme::{colors, create_vscode_style, fonts, layout};
 use crate::widgets::{
-    ActivityBar, ActivityItem,
-    LineNumbersGutter,
-    Minimap,
-    StatusBar, StatusBarInfo,
-    Tab, TabBar,
-    status_bar::detect_language,
+    status_bar::detect_language, ActivityBar, ActivityItem, LineNumbersGutter, Minimap, StatusBar,
+    StatusBarInfo, Tab, TabBar,
 };
-use egui::{Color32, FontId, Frame, Margin, Pos2, Rect, RichText, ScrollArea, TextEdit, TextStyle, Vec2};
+use egui::{
+    Color32, FontId, Frame, Margin, Pos2, Rect, RichText, ScrollArea, TextEdit, TextStyle, Vec2,
+};
 use rfd::FileDialog;
 use ropey::Rope;
 use std::path::PathBuf;
@@ -21,12 +19,7 @@ use syntect::parsing::SyntaxSet;
 const SYNTAX_THEME: &str = "base16-ocean.dark";
 
 /// Bracket pairs for matching
-const BRACKET_PAIRS: &[(char, char)] = &[
-    ('(', ')'),
-    ('[', ']'),
-    ('{', '}'),
-    ('<', '>'),
-];
+const BRACKET_PAIRS: &[(char, char)] = &[('(', ')'), ('[', ']'), ('{', '}'), ('<', '>')];
 
 /// Find the matching bracket position for a given cursor position
 fn find_matching_bracket(text: &str, cursor_offset: usize) -> Option<(usize, usize)> {
@@ -258,7 +251,7 @@ impl EditorApp {
                             let find_response = ui.add(
                                 TextEdit::singleline(&mut self.find_replace.search_text)
                                     .desired_width(200.0)
-                                    .hint_text("Search...")
+                                    .hint_text("Search..."),
                             );
 
                             // Auto-search when text changes
@@ -267,12 +260,18 @@ impl EditorApp {
                             }
 
                             // Request focus on first open
-                            if !self.find_replace.search_text.is_empty() || find_response.gained_focus() {
+                            if !self.find_replace.search_text.is_empty()
+                                || find_response.gained_focus()
+                            {
                                 find_response.request_focus();
                             }
 
                             // Navigation buttons
-                            if ui.button("▲").on_hover_text("Previous (Shift+Enter)").clicked() {
+                            if ui
+                                .button("▲")
+                                .on_hover_text("Previous (Shift+Enter)")
+                                .clicked()
+                            {
                                 self.find_previous();
                             }
                             if ui.button("▼").on_hover_text("Next (Enter)").clicked() {
@@ -302,10 +301,14 @@ impl EditorApp {
                                 ui.add(
                                     TextEdit::singleline(&mut self.find_replace.replace_text)
                                         .desired_width(200.0)
-                                        .hint_text("Replace with...")
+                                        .hint_text("Replace with..."),
                                 );
 
-                                if ui.button("Replace").on_hover_text("Replace current").clicked() {
+                                if ui
+                                    .button("Replace")
+                                    .on_hover_text("Replace current")
+                                    .clicked()
+                                {
                                     self.replace_current();
                                 }
                                 if ui.button("All").on_hover_text("Replace all").clicked() {
@@ -436,9 +439,11 @@ impl EditorApp {
 
     fn render_menu_bar(&mut self, ctx: &egui::Context) {
         egui::TopBottomPanel::top("menu_bar")
-            .frame(Frame::none()
-                .fill(colors::MENU_BAR_BG)
-                .inner_margin(Margin::symmetric(8.0, 6.0)))
+            .frame(
+                Frame::none()
+                    .fill(colors::MENU_BAR_BG)
+                    .inner_margin(Margin::symmetric(8.0, 6.0)),
+            )
             .show(ctx, |ui| {
                 ui.horizontal(|ui| {
                     ui.spacing_mut().item_spacing.x = 4.0;
@@ -490,7 +495,10 @@ impl EditorApp {
 
     fn view_menu(&mut self, ui: &mut egui::Ui) {
         ui.menu_button("View", |ui| {
-            if ui.checkbox(&mut self.show_minimap, "Show Minimap").clicked() {
+            if ui
+                .checkbox(&mut self.show_minimap, "Show Minimap")
+                .clicked()
+            {
                 ui.close_menu();
             }
         });
@@ -521,9 +529,11 @@ impl EditorApp {
             .resizable(true)
             .default_width(layout::SIDEBAR_DEFAULT_WIDTH)
             .min_width(layout::SIDEBAR_MIN_WIDTH)
-            .frame(Frame::none()
-                .fill(colors::PANEL_BG)
-                .inner_margin(Margin::same(0.0)))
+            .frame(
+                Frame::none()
+                    .fill(colors::PANEL_BG)
+                    .inner_margin(Margin::same(0.0)),
+            )
             .show(ctx, |ui| {
                 self.render_explorer_header(ui);
                 ui.separator();
@@ -612,7 +622,10 @@ impl EditorApp {
 
             // Draw icon and text
             let icon = file_icons::get_icon(&name);
-            let text_pos = Pos2::new(rect.left() + indent + layout::INDENT_SIZE + 4.0, rect.center().y);
+            let text_pos = Pos2::new(
+                rect.left() + indent + layout::INDENT_SIZE + 4.0,
+                rect.center().y,
+            );
             ui.painter().text(
                 text_pos,
                 egui::Align2::LEFT_CENTER,
@@ -631,9 +644,11 @@ impl EditorApp {
 
     fn render_editor(&mut self, ctx: &egui::Context) {
         egui::CentralPanel::default()
-            .frame(Frame::none()
-                .fill(colors::EDITOR_BG)
-                .inner_margin(Margin::same(0.0)))
+            .frame(
+                Frame::none()
+                    .fill(colors::EDITOR_BG)
+                    .inner_margin(Margin::same(0.0)),
+            )
             .show(ctx, |ui| {
                 self.render_tab_bar(ui);
                 ui.separator();
@@ -642,12 +657,10 @@ impl EditorApp {
     }
 
     fn render_tab_bar(&mut self, ui: &mut egui::Ui) {
-        let tabs: Vec<Tab> = self.open_files
+        let tabs: Vec<Tab> = self
+            .open_files
             .iter()
-            .map(|f| {
-                Tab::new(f.name(), file_icons::get_icon(&f.name()))
-                    .modified(f.is_modified())
-            })
+            .map(|f| Tab::new(f.name(), file_icons::get_icon(&f.name())).modified(f.is_modified()))
             .collect();
 
         if tabs.is_empty() {
@@ -707,7 +720,11 @@ impl EditorApp {
 
             // === Main Editor Area ===
             // Editor fills remaining space between gutter and minimap
-            let minimap_width = if show_minimap { layout::MINIMAP_WIDTH } else { 0.0 };
+            let minimap_width = if show_minimap {
+                layout::MINIMAP_WIDTH
+            } else {
+                0.0
+            };
             let editor_width = ui.available_width() - minimap_width;
 
             ui.vertical(|ui| {
@@ -744,7 +761,8 @@ impl EditorApp {
 
         // Get syntax highlighting info
         let ext = file.extension().to_string();
-        let syntax = self.syntax_set
+        let syntax = self
+            .syntax_set
             .find_syntax_by_extension(&ext)
             .unwrap_or_else(|| self.syntax_set.find_syntax_plain_text())
             .clone();
@@ -787,10 +805,14 @@ impl EditorApp {
                         },
                     );
                 }
-                job.append("\n", 0.0, egui::TextFormat {
-                    line_height: Some(line_height),
-                    ..Default::default()
-                });
+                job.append(
+                    "\n",
+                    0.0,
+                    egui::TextFormat {
+                        line_height: Some(line_height),
+                        ..Default::default()
+                    },
+                );
             }
 
             ui.fonts(|f| f.layout_job(job))
@@ -802,12 +824,11 @@ impl EditorApp {
             .scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysVisible);
 
         // Calculate character width for indent guides
-        let char_width = ui.fonts(|f| {
-            f.glyph_width(&FontId::monospace(fonts::BODY), ' ')
-        });
+        let char_width = ui.fonts(|f| f.glyph_width(&FontId::monospace(fonts::BODY), ' '));
 
         // Pre-calculate indent levels for each line
-        let indent_levels: Vec<usize> = text.lines()
+        let indent_levels: Vec<usize> = text
+            .lines()
             .map(|line| {
                 let spaces = line.chars().take_while(|c| *c == ' ').count();
                 let tabs = line.chars().take_while(|c| *c == '\t').count();
@@ -844,7 +865,8 @@ impl EditorApp {
             let max_indent = indent_levels.iter().copied().max().unwrap_or(0);
 
             for indent in 1..=max_indent {
-                let x = rect.left() + (indent as f32 * indent_width) - (indent_width - char_width * 0.5);
+                let x = rect.left() + (indent as f32 * indent_width)
+                    - (indent_width - char_width * 0.5);
 
                 // Draw vertical line segments where this indent level is active
                 let mut segment_start: Option<usize> = None;
@@ -910,10 +932,8 @@ impl EditorApp {
                     let y = rect.top() + (start_line as f32 * line_height);
                     let width = (end_col - start_col) as f32 * char_width;
 
-                    let match_rect = Rect::from_min_size(
-                        Pos2::new(x, y),
-                        Vec2::new(width, line_height),
-                    );
+                    let match_rect =
+                        Rect::from_min_size(Pos2::new(x, y), Vec2::new(width, line_height));
 
                     let (bg_color, border_color) = if idx == current_match_idx {
                         (colors::FIND_MATCH_CURRENT_BG, colors::FIND_MATCH_BORDER)
@@ -947,7 +967,11 @@ impl EditorApp {
                     Vec2::new(char_width, line_height),
                 );
                 painter.rect_filled(bracket_rect, 2.0, colors::BRACKET_MATCH_BG);
-                painter.rect_stroke(bracket_rect, 2.0, egui::Stroke::new(1.0, colors::BRACKET_MATCH_BORDER));
+                painter.rect_stroke(
+                    bracket_rect,
+                    2.0,
+                    egui::Stroke::new(1.0, colors::BRACKET_MATCH_BORDER),
+                );
 
                 // Draw highlight for closing bracket
                 let close_x = rect.left() + (close_col as f32 * char_width);
@@ -957,7 +981,11 @@ impl EditorApp {
                     Vec2::new(char_width, line_height),
                 );
                 painter.rect_filled(bracket_rect, 2.0, colors::BRACKET_MATCH_BG);
-                painter.rect_stroke(bracket_rect, 2.0, egui::Stroke::new(1.0, colors::BRACKET_MATCH_BORDER));
+                painter.rect_stroke(
+                    bracket_rect,
+                    2.0,
+                    egui::Stroke::new(1.0, colors::BRACKET_MATCH_BORDER),
+                );
             }
 
             let text_edit_id = ui.id().with("editor");
@@ -966,8 +994,8 @@ impl EditorApp {
                     .id(text_edit_id)
                     .font(TextStyle::Monospace)
                     .code_editor()
-                    .frame(false)  // Remove TextEdit's internal frame/margin
-                    .margin(Vec2::ZERO)  // No margin
+                    .frame(false) // Remove TextEdit's internal frame/margin
+                    .margin(Vec2::ZERO) // No margin
                     .desired_width(f32::INFINITY)
                     .layouter(&mut layouter),
             );
@@ -1073,9 +1101,7 @@ impl EditorApp {
 
                 let file_name = self.open_files.get(self.active_tab).map(|f| f.name());
 
-                StatusBar::new(info)
-                    .file_name(file_name)
-                    .show(ui);
+                StatusBar::new(info).file_name(file_name).show(ui);
             });
     }
 

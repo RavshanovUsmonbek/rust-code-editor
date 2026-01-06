@@ -14,7 +14,9 @@ pub fn get_icon(filename: &str) -> &'static str {
 
         // Web
         _ if lower.ends_with(".html") || lower.ends_with(".htm") => "🌐",
-        _ if lower.ends_with(".css") || lower.ends_with(".scss") || lower.ends_with(".sass") => "🎨",
+        _ if lower.ends_with(".css") || lower.ends_with(".scss") || lower.ends_with(".sass") => {
+            "🎨"
+        }
         _ if lower.ends_with(".js") => "JS",
         _ if lower.ends_with(".ts") => "TS",
         _ if lower.ends_with(".jsx") || lower.ends_with(".tsx") => "⚛️",
@@ -47,8 +49,15 @@ pub fn get_icon(filename: &str) -> &'static str {
         _ if lower.ends_with(".xlsx") || lower.ends_with(".xls") => "📊",
 
         // Images
-        _ if lower.ends_with(".png") || lower.ends_with(".jpg") || lower.ends_with(".jpeg")
-            || lower.ends_with(".gif") || lower.ends_with(".svg") || lower.ends_with(".ico") => "🖼️",
+        _ if lower.ends_with(".png")
+            || lower.ends_with(".jpg")
+            || lower.ends_with(".jpeg")
+            || lower.ends_with(".gif")
+            || lower.ends_with(".svg")
+            || lower.ends_with(".ico") =>
+        {
+            "🖼️"
+        }
 
         // Lock files
         _ if lower.ends_with(".lock") => "🔒",

@@ -111,7 +111,7 @@ pub mod layout {
 
     // Editor
     pub const LINE_HEIGHT: f32 = 18.0;
-    pub const TAB_SIZE: usize = 4;  // Number of spaces per indent level
+    pub const TAB_SIZE: usize = 4; // Number of spaces per indent level
 }
 
 pub fn create_vscode_style() -> Style {
@@ -157,16 +157,31 @@ pub fn create_vscode_style() -> Style {
         handle_min_length: 20.0,
         bar_inner_margin: 2.0,
         bar_outer_margin: 0.0,
-        floating: true,  // Overlay scrollbar
+        floating: true, // Overlay scrollbar
         ..Default::default()
     };
 
     style.text_styles = [
-        (TextStyle::Small, FontId::new(fonts::SMALL, FontFamily::Proportional)),
-        (TextStyle::Body, FontId::new(fonts::BODY, FontFamily::Proportional)),
-        (TextStyle::Button, FontId::new(fonts::BODY, FontFamily::Proportional)),
-        (TextStyle::Heading, FontId::new(fonts::HEADING, FontFamily::Proportional)),
-        (TextStyle::Monospace, FontId::new(fonts::BODY, FontFamily::Monospace)),
+        (
+            TextStyle::Small,
+            FontId::new(fonts::SMALL, FontFamily::Proportional),
+        ),
+        (
+            TextStyle::Body,
+            FontId::new(fonts::BODY, FontFamily::Proportional),
+        ),
+        (
+            TextStyle::Button,
+            FontId::new(fonts::BODY, FontFamily::Proportional),
+        ),
+        (
+            TextStyle::Heading,
+            FontId::new(fonts::HEADING, FontFamily::Proportional),
+        ),
+        (
+            TextStyle::Monospace,
+            FontId::new(fonts::BODY, FontFamily::Monospace),
+        ),
     ]
     .into();
 

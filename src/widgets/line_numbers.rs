@@ -1,5 +1,5 @@
-use egui::{FontId, Pos2, Rect, Response, Sense, Ui, Vec2};
 use crate::theme::{colors, fonts, layout};
+use egui::{FontId, Pos2, Rect, Response, Sense, Ui, Vec2};
 
 /// Custom line numbers gutter widget that renders VSCode-style line numbers
 pub struct LineNumbersGutter {

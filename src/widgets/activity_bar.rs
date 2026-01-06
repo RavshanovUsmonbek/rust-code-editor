@@ -1,5 +1,5 @@
-use egui::{FontId, Pos2, Rect, Sense, Ui, Vec2};
 use crate::theme::{colors, fonts, layout};
+use egui::{FontId, Pos2, Rect, Sense, Ui, Vec2};
 
 /// Activity items for the activity bar
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]

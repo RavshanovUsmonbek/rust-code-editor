@@ -1,5 +1,5 @@
-use egui::{Frame, Margin, Pos2, RichText, Sense, Stroke, Ui, Vec2};
 use crate::theme::{colors, fonts, layout};
+use egui::{Frame, Margin, Pos2, RichText, Sense, Stroke, Ui, Vec2};
 
 /// Represents a single tab
 #[derive(Clone)]
@@ -71,7 +71,13 @@ impl TabBar {
         response
     }
 
-    fn render_tab(&self, ui: &mut Ui, tab: &Tab, is_active: bool, _index: usize) -> SingleTabResponse {
+    fn render_tab(
+        &self,
+        ui: &mut Ui,
+        tab: &Tab,
+        is_active: bool,
+        _index: usize,
+    ) -> SingleTabResponse {
         let mut activated = false;
         let mut closed = false;
 
@@ -83,7 +89,10 @@ impl TabBar {
 
         Frame::none()
             .fill(bg_color)
-            .inner_margin(Margin::symmetric(layout::TAB_PADDING_H, layout::TAB_PADDING_V))
+            .inner_margin(Margin::symmetric(
+                layout::TAB_PADDING_H,
+                layout::TAB_PADDING_V,
+            ))
             .show(ui, |ui| {
                 // Draw top border for active tab
                 if is_active {
@@ -131,10 +140,8 @@ impl TabBar {
                     }
 
                     // Close button
-                    let (close_rect, close_response) = ui.allocate_exact_size(
-                        Vec2::splat(fonts::CLOSE_BUTTON),
-                        Sense::click(),
-                    );
+                    let (close_rect, close_response) =
+                        ui.allocate_exact_size(Vec2::splat(fonts::CLOSE_BUTTON), Sense::click());
 
                     // Draw close button
                     let close_hovered = close_response.hovered();
@@ -145,11 +152,8 @@ impl TabBar {
                     };
 
                     if close_hovered {
-                        ui.painter().rect_filled(
-                            close_rect,
-                            2.0,
-                            colors::WIDGET_HOVERED,
-                        );
+                        ui.painter()
+                            .rect_filled(close_rect, 2.0, colors::WIDGET_HOVERED);
                     }
 
                     ui.painter().text(

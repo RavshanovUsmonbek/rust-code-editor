@@ -16,7 +16,11 @@ impl FileNode {
         } else {
             vec![]
         };
-        Self { path, is_dir, children }
+        Self {
+            path,
+            is_dir,
+            children,
+        }
     }
 
     fn load_children(path: &PathBuf) -> Vec<FileNode> {
@@ -30,12 +34,10 @@ impl FileNode {
             .collect();
 
         // Sort: directories first, then alphabetically by name
-        children.sort_by(|a, b| {
-            match (a.is_dir, b.is_dir) {
-                (true, false) => std::cmp::Ordering::Less,
-                (false, true) => std::cmp::Ordering::Greater,
-                _ => a.path.file_name().cmp(&b.path.file_name()),
-            }
+        children.sort_by(|a, b| match (a.is_dir, b.is_dir) {
+            (true, false) => std::cmp::Ordering::Less,
+            (false, true) => std::cmp::Ordering::Greater,
+            _ => a.path.file_name().cmp(&b.path.file_name()),
         });
 
         children

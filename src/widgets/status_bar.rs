@@ -1,6 +1,6 @@
-use egui::{Frame, Margin, RichText, Ui};
 use crate::state::CursorPosition;
 use crate::theme::{colors, fonts, layout};
+use egui::{Frame, Margin, RichText, Ui};
 
 /// Information displayed in the status bar
 #[derive(Clone)]
@@ -74,35 +74,47 @@ impl StatusBar {
                             RichText::new("Rust Code Editor")
                                 .size(fonts::STATUS_BAR)
                                 .color(colors::TEXT_PRIMARY)
-                                .strong()
+                                .strong(),
                         );
 
                         ui.separator();
 
                         // Cursor position: "Ln X, Col Y"
                         let cursor_text = self.info.cursor.display();
-                        if ui.selectable_label(false, label_style(&cursor_text)).clicked() {
+                        if ui
+                            .selectable_label(false, label_style(&cursor_text))
+                            .clicked()
+                        {
                             // Could open "Go to Line" dialog
                         }
 
                         ui.separator();
 
                         // Line ending (LF/CRLF)
-                        if ui.selectable_label(false, label_style(&self.info.line_ending)).clicked() {
+                        if ui
+                            .selectable_label(false, label_style(&self.info.line_ending))
+                            .clicked()
+                        {
                             // Could show line ending selector
                         }
 
                         ui.separator();
 
                         // Encoding
-                        if ui.selectable_label(false, label_style(&self.info.encoding)).clicked() {
+                        if ui
+                            .selectable_label(false, label_style(&self.info.encoding))
+                            .clicked()
+                        {
                             // Could show encoding selector
                         }
 
                         ui.separator();
 
                         // Language mode
-                        if ui.selectable_label(false, label_style(&self.info.language)).clicked() {
+                        if ui
+                            .selectable_label(false, label_style(&self.info.language))
+                            .clicked()
+                        {
                             // Could show language selector
                         }
 
@@ -111,8 +123,7 @@ impl StatusBar {
                         // Line and character count
                         ui.label(label_style(&format!(
                             "Lines: {} | Chars: {}",
-                            self.info.total_lines,
-                            self.info.total_chars
+                            self.info.total_lines, self.info.total_chars
                         )));
                     });
                 });
