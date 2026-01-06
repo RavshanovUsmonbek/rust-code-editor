@@ -48,10 +48,10 @@ fn find_matching_bracket(text: &str, cursor_offset: usize) -> Option<(usize, usi
             if ch == open {
                 // Search forward for closing bracket
                 let mut depth = 1;
-                for i in (pos + 1)..chars.len() {
-                    if chars[i] == open {
+                for (i, &c) in chars.iter().enumerate().skip(pos + 1) {
+                    if c == open {
                         depth += 1;
-                    } else if chars[i] == close {
+                    } else if c == close {
                         depth -= 1;
                         if depth == 0 {
                             return Some((pos, i));
@@ -599,7 +599,7 @@ impl EditorApp {
                     });
             });
         } else {
-            let is_selected = active_path.map_or(false, |p| p == &node.path);
+            let is_selected = active_path == Some(&node.path);
             let available_width = ui.available_width();
 
             let (rect, response) = ui.allocate_exact_size(
@@ -1053,7 +1053,7 @@ impl EditorApp {
         }
 
         // Update buffer if changed
-        if text != file.buffer.to_string() {
+        if text != file.buffer {
             file.buffer = Rope::from_str(&text);
             file.state.is_modified = text != original;
         }
