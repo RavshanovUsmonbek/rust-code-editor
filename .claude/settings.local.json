@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cargo build:*)",
+      "Bash(wc:*)",
+      "Bash(rm:*)",
+      "Bash(cargo clippy:*)",
+      "Bash(cat:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebSearch",
+      "WebFetch(domain:docs.rs)",
+      "Bash(dir:*)"
+    ]
+  }
+}

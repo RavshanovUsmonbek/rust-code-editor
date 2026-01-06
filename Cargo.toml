@@ -1,0 +1,16 @@
+[package]
+name = "rust_code_editor"
+version = "0.1.0"
+edition = "2021"
+description = "A VSCode-style code editor built with Rust and egui"
+license = "MIT"
+repository = "https://github.com/RavshanovUsmonbek/rust-code-editor"
+keywords = ["editor", "code-editor", "gui", "egui"]
+categories = ["gui", "text-editors"]
+
+[dependencies]
+eframe = "0.26"
+egui = "0.26"
+ropey = "1.6"
+rfd = "0.11"  # for file/folder dialogs
+syntect = "5.0"  # for syntax highlighting
